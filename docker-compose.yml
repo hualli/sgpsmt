@@ -1,0 +1,57 @@
+version: '3'
+services:
+ 
+  #PHP-APACHE
+  sgpsmt-backend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: sgpsmt-backend
+    restart: always
+    ports:
+      - "8080:80"
+    tty: true
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+      - ./docker-volumes/apache_config:/etc/apache2/sites-available
+    networks:
+      - sgpsmt-network
+
+  #Mysql
+  sgpsmt-mysql:
+    image: mysql:8.0
+    container_name: sgpsmt-mysql
+    restart: always
+    ports:
+      - "3307:3306"
+    tty: true
+    environment:
+      MYSQL_DATABASE: sgpsmt_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: sgpsmt_user
+      MYSQL_PASSWORD: sgpsmt_pass
+    volumes:
+        - ./docker-volumes/mysql_data:/var/lib/mysql
+    networks:
+      - sgpsmt-network
+
+    #phpMyAdmin
+  sgpsmt-phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sgpsmt-phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: sgpsmt-mysql
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - sgpsmt-mysql
+    networks:
+      - sgpsmt-network
+ 
+#Redes
+networks:
+  sgpsmt-network:
+    driver: bridge
