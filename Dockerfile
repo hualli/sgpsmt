@@ -10,9 +10,3 @@ RUN apt-get update && apt-get install -y \
 
 # Instalar Composer
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-
-#Change ownership of the working directory
-RUN chown -R www-data:www-data /var/www
-
-#Use the user www-data
-USER www-data
