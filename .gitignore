@@ -22,3 +22,4 @@
 /app/.vscode
 /app/.zed
 /docker-volumes/mysql_data
+.idea/
