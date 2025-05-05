@@ -6,15 +6,23 @@ use App\Models\Zone;
 use App\Http\Resources\ZoneResource;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
+use App\Services\ZoneService;
 
 class ZoneController extends Controller
 {
+    protected $zoneService;
+
+    public function __construct(ZoneService $zoneService)
+    {
+        $this->zoneService = $zoneService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return ZoneResource::collection(Zone::all());
+        return ZoneResource::collection($this->zoneService->getAllZones());
     }
 
     /**
@@ -22,7 +30,7 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        $zone = Zone::create($request->validated());
+        $zone = $this->zoneService->createZone($request->validated());
 
         return new ZoneResource($zone);
     }
@@ -40,7 +48,7 @@ class ZoneController extends Controller
      */
     public function update(UpdateZoneRequest $request, Zone $zone)
     {
-        $zone->update($request->validated());
+        $this->zoneService->updateZone($zone, $request->validated());
 
         return new ZoneResource($zone);
     }
@@ -51,7 +59,7 @@ class ZoneController extends Controller
     public function destroy(Zone $zone)
     {
         $zoneName = $zone->name;
-        $zone->delete();
+        $this->zoneService->deleteZone($zone);
 
         return response()->json([
             'message' => "La zona '{$zoneName}' fue eliminada correctamente.",
