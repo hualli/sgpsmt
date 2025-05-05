@@ -18,4 +18,9 @@ class Zone extends Model
         'name',
         'polygon',
     ];
+
+    public function timeSlots()
+    {
+        return $this->hasMany(TimeSlot::class);
+    }
 }
