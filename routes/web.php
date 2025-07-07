@@ -7,6 +7,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/solicitar-permiso', function () {
+    return view('solicitar');
+})->name('solicitar-permiso');
+
+Route::get('/consultar-permiso', function () {
+    return view('consultar');
+})->name('consultar-permiso');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
