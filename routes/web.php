@@ -1,19 +1,16 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PermitController;
 use Illuminate\Support\Facades\Route;
 
+// Rutas públicas
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/solicitar-permiso', function () {
-    return view('solicitar');
-})->name('solicitar-permiso');
-
-Route::get('/consultar-permiso', function () {
-    return view('consultar');
-})->name('consultar-permiso');
+Route::get('/solicitar-permiso', [PermitController::class, 'create'])->name('permits.create');
+Route::get('/consultar-permiso', [PermitController::class, 'checkStatus'])->name('permits.status');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
