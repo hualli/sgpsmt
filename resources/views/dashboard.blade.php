@@ -1,17 +1,25 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('adminlte::page')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Dashboard</h1>
+@stop
+
+@section('content')
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>150</h3>
+                    <p>Inscripciones</p>
                 </div>
+                <div class="icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <a href="#" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+        <!-- Agregá más cajas, widgets o tablas según tu necesidad -->
     </div>
-</x-app-layout>
+@stop
