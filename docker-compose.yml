@@ -1,0 +1,52 @@
+services:
+  #--- 1. El Servicio de la Aplicación (PHP-FPM) ---
+  app:
+    build:
+      context: . # Usa el Dockerfile en esta misma carpeta
+    container_name: sgpsmt-app
+    restart: always
+    volumes:
+      - .:/var/www/html # Sincroniza tu código con el contenedor
+    networks:
+      - sgpsmt-internal # Red interna para hablar con la BD y el web
+    depends_on:
+      - db
+
+  #--- 2. El Servicio Web (Nginx Interno) ---
+  web:
+    image: nginx:1.25-alpine
+    container_name: sgpsmt-web # <-- El nombre que usará NPM
+    restart: always
+    ports:
+      - "8091:80" # (Opcional) Expone en el puerto 8091 del host para pruebas
+    volumes:
+      - .:/var/www/html # Acceso al código (para assets públicos)
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - sgpsmt-internal   # Red interna para hablar con PHP
+      #- proxy-network  # Red externa para hablar con Nginx Proxy Manager
+
+  #--- 3. El Servicio de Base de Datos (MySQL) ---
+  db:
+    image: mysql:8.4
+    container_name: sgpsmt-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: laravel # <-- Debe coincidir con tu .env
+      MYSQL_USER: laravel     # <-- Debe coincidir con tu .env
+      MYSQL_PASSWORD: secret  # <-- Debe coincidir con tu .env
+      MYSQL_ROOT_PASSWORD: root_secret # Clave root (usa una segura)
+    volumes:
+      - sgpsmt-db-data:/var/lib/mysql
+    networks:
+      - sgpsmt-internal
+
+volumes:
+  sgpsmt-db-data: # Volumen para persistir los datos de la BD
+
+networks:
+  sgpsmt-internal: # Red privada para esta app
+  #proxy-network:
+  #  external: true # La red compartida que ya creamos
