@@ -1,6 +1,6 @@
 services:
   #--- 1. El Servicio de la Aplicación (PHP-FPM) ---
-  app:
+  sgpsmt-php:
     build:
       context: . # Usa el Dockerfile en esta misma carpeta
     container_name: sgpsmt-app
@@ -10,10 +10,10 @@ services:
     networks:
       - sgpsmt-internal # Red interna para hablar con la BD y el web
     depends_on:
-      - db
+      - sgpsmt-db
 
   #--- 2. El Servicio Web (Nginx Interno) ---
-  web:
+  sgpsmt-web:
     image: nginx:1.25-alpine
     container_name: sgpsmt-web # <-- El nombre que usará NPM
     restart: always
@@ -23,13 +23,13 @@ services:
       - .:/var/www/html # Acceso al código (para assets públicos)
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - app
+      - sgpsmt-php
     networks:
       - sgpsmt-internal   # Red interna para hablar con PHP
       #- proxy-network  # Red externa para hablar con Nginx Proxy Manager
 
   #--- 3. El Servicio de Base de Datos (MySQL) ---
-  db:
+  sgpsmt-db:
     image: mysql:8.4
     container_name: sgpsmt-db
     restart: always
