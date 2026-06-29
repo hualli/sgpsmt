@@ -1,5 +1,5 @@
-# Usamos la imagen oficial de PHP 8.3-FPM
-FROM php:8.3-fpm
+# Usamos la imagen oficial de PHP 8.5-FPM
+FROM php:8.5-fpm
 
 # Directorio de trabajo
 WORKDIR /var/www/html
@@ -25,15 +25,16 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Instalamos Composer (última versión)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Instalamos Node.js 22 (para compilar assets)
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+# Instalamos Node.js 24 (para compilar assets)
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt-get install -y nodejs
 
 # Copiamos los archivos de la app
 COPY . .
 
 # Instalamos dependencias de Composer (sin dev)
-RUN composer install --no-interaction --optimize-autoloader --no-dev
+RUN git config --global --add safe.directory /var/www/html \
+    && composer install --no-interaction --optimize-autoloader --no-dev
 
 # Instalamos dependencias de NPM y compilamos (Vite)
 RUN npm install
