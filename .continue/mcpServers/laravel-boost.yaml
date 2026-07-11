@@ -1,0 +1,14 @@
+name: Laravel Boost
+version: 1.0.0
+schema: v1
+mcpServers:
+  - name: laravel-boost
+    command: docker
+    args:
+      - exec
+      - -i
+      - sgpsmt-app
+      - php
+      - artisan
+      - boost:mcp
+    env: {}

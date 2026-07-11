@@ -25,14 +25,14 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Docker Environment (CRITICAL RULES)
 
 - This application runs entirely inside Docker containers. You MUST NOT run commands directly on the host machine.
-- The main application container is named `dhs-app`.
+- The main application container is named `sgpsmt-app`.
 - Every time you need to execute `php`, `composer`, `npm`, or `vendor/bin/...`, you MUST prefix the command to run it inside the container.
-- Use `docker exec -i dhs-app` for all commands.
+- Use `docker exec -i sgpsmt-app` for all commands.
 - Examples:
-  - Instead of `php artisan route:list`, run: `docker exec -i dhs-app php artisan route:list`
-  - Instead of `composer require package`, run: `docker exec -i dhs-app composer require package`
-  - Instead of `npm run build`, run: `docker exec -i dhs-app npm run build`
-  - Instead of `vendor/bin/pint`, run: `docker exec -i dhs-app vendor/bin/pint`
+  - Instead of `php artisan route:list`, run: `docker exec -i sgpsmt-app php artisan route:list`
+  - Instead of `composer require package`, run: `docker exec -i sgpsmt-app composer require package`
+  - Instead of `npm run build`, run: `docker exec -i sgpsmt-app npm run build`
+  - Instead of `vendor/bin/pint`, run: `docker exec -i sgpsmt-app vendor/bin/pint`
   
 ## Skills Activation
 
