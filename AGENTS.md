@@ -33,7 +33,10 @@ This application is a Laravel application and its main Laravel ecosystems packag
   - Instead of `composer require package`, run: `docker exec -i sgpsmt-app composer require package`
   - Instead of `npm run build`, run: `docker exec -i sgpsmt-app npm run build`
   - Instead of `vendor/bin/pint`, run: `docker exec -i sgpsmt-app vendor/bin/pint`
-  
+- **Permission Fix:** Whenever you create, modify, or move a file inside the container, it will likely be owned by root. You MUST immediately restore ownership to the local host user (UID 1000) and the web server group (GID 33).
+- To fix permissions, you MUST run this specific command immediately after the file is created or modified: `docker exec -u root sgpsmt-app chown 1000:33 <path-to-file>`
+- Example: After creating a migration, run `docker exec -u root sgpsmt-app chown 1000:33 database/migrations/2026_07_25_070905_create_clientes_table.php`
+
 ## Skills Activation
 
 This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
