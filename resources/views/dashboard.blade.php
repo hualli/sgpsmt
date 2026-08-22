@@ -8,6 +8,17 @@
 
 @section('content')
     <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class="card-title">Bienvenido, {{ auth()->user()->name }}</h3>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">Tu rol actual es: <strong class="text-primary">{{ auth()->user()->role }}</strong></p>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
